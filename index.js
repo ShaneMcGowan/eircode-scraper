@@ -1,23 +1,18 @@
-import { createDirectoryAndFile } from './helpers/create-folder.js';
-import { ROUTING_KEYS } from './constants/index.js';
+import { createDirectoryAndFile } from "./helpers/create-folder.js";
+import { ROUTING_KEYS } from "./constants/index.js";
+import { handleResponse } from "./helpers/parse-response.js";
+import { generateStringByIndex, totalCombinations } from './helpers/generate-area-code.js';
+import { getEircode } from "./helpers/get-eircode.js";
+import { getKey } from './helpers/get-key.js';
 
-const eircode = ``;
-const key = ``; // TODO: how do we generate / get these? what are they valid for
-const language = `en`;
-const getGeographicAddress = true;
+const key = await getKey();
 
-const url = `https://api-finder.eircode.ie/Latest/finderautocomplete?key=${key}&address=${eircode}&language=${language}&geographicAddress=${getGeographicAddress}`;
+for(let i = 0; i < totalCombinations; i++){
+  // if(i === 20){
+  //   throw Error(`Enough for now`);
+  // }
 
-const response = await fetch(url);
-const data = await response.json();
-console.log(data.options)
-
-// ROUTING_KEYS[0].routingKey;
-
-ROUTING_KEYS.forEach(value => {
-  createDirectoryAndFile(
-    'data',
-    `${value.routingKey}.json`,
-    `{}`
-  );
-});
+  const uniqueIdentifier = generateStringByIndex(i);
+  const data = await getEircode(key, "F91", uniqueIdentifier);
+  handleResponse(data);
+}
