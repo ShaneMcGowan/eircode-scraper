@@ -1,7 +1,8 @@
 import { createDirectoryAndFile } from './helpers/create-folder.js';
+import { ROUTING_KEYS } from './constants/index.js';
 
-const eircode = `D16R902`;
-const key = `_e80355fb-732a-45fe-b725-15c909850bae`; // TODO: how do we generate / get these? what are they valid for
+const eircode = ``;
+const key = ``; // TODO: how do we generate / get these? what are they valid for
 const language = `en`;
 const getGeographicAddress = true;
 
@@ -13,4 +14,10 @@ console.log(data.options)
 
 // ROUTING_KEYS[0].routingKey;
 
-createDirectoryAndFile();
+ROUTING_KEYS.forEach(value => {
+  createDirectoryAndFile(
+    'data',
+    `${value.routingKey}.json`,
+    `{}`
+  );
+});
